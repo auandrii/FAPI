@@ -18,8 +18,8 @@ class CrawlRequest(BaseModel):
 # Initialize Celery with RabbitMQ as the broker and Redis as the backend
 celery_app = Celery(
     'crawler',
-    broker='amqp://user:password@localhost/rabbitmq',  # Update credentials
-    backend='redis://localhost:6379/0'
+    broker='amqp://user:password@rabbitmq',  # Update credentials
+    backend='redis://redis:6379/0'
 )
 
 @app.post("/crawl")
@@ -27,8 +27,7 @@ async def crawl_site(request: CrawlRequest):
     """
     Endpoint to initiate site crawling.
     """
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    logger.info('!!!!!!!!!!!!!!!!!!test')
+    print(request.url)
     task = crawl_site_task.delay(request.url)
     return {"task_id": task.id}
 
