@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    command: uvicorn main:app --host 0.0.0.0 --reload
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+      - redis
+    environment:
+      - CELERY_BROKER_URL=amqp://user:password@rabbitmq
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  worker:
+    build: .
+    command: celery -A main.celery_app worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - web
+      - rabbitmq
+      - redis
+
+  rabbitmq:
+    image: rabbitmq:management
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.17.1-focal
+    depends_on:
+      - web
+    command: sh -c "npm i -D playwright && npx playwright install-deps"
