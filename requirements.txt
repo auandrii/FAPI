@@ -2,3 +2,4 @@ fastapi
 celery
 pydantic
 uvicorn
+playwright
