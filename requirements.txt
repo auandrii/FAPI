@@ -3,3 +3,4 @@ celery
 pydantic
 uvicorn
 playwright
+redis
