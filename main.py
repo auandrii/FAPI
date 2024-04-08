@@ -38,7 +38,7 @@ def crawl_site_task(self, url):
         processed_text = loop.run_until_complete(crawl_and_extract_text(url))
 
         # Cache the result with a 12-hour expiration
-        #self.backend.client.set(url, processed_text, ex=43200)
+        self.backend.client.set(url, processed_text, ex=43200)
 
         return processed_text
     except Exception as e:
