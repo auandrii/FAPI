@@ -3,10 +3,6 @@ from celery import Celery
 from pydantic import BaseModel
 from crawler import crawl_and_extract_text
 import asyncio
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
@@ -29,10 +25,12 @@ async def crawl_site(request: CrawlRequest):
     """
     print(request.url)
     task = crawl_site_task.delay(request.url)
+
     return {"task_id": task.id}
 
 @celery_app.task(bind=True)
 def crawl_site_task(self, url):
+
     try:
         # Since Playwright is asynchronous, we need to run it inside an event loop
         loop = asyncio.new_event_loop()

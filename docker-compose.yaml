@@ -38,9 +38,8 @@ services:
     ports:
       - "6379:6379"
 
-  playwright:
-    image: mcr.microsoft.com/playwright:v1.43.0-jammy #mcr.microsoft.com/playwright:v1.17.1-focal
-    depends_on:
-      - web
-    #command: sh -c "npm i -D playwright && npx playwright install"
-    command: sh -c "npm init playwright@latest"
+#  playwright:
+#    image: mcr.microsoft.com/playwright:v1.43.0-jammy #mcr.microsoft.com/playwright:v1.17.1-focal
+#    depends_on:
+#      - web
+#    #command: sh -c "npm i -D playwright && npx playwright install -y"
