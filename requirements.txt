@@ -1,0 +1,6 @@
+fastapi
+celery
+pydantic
+uvicorn
+playwright
+redis
